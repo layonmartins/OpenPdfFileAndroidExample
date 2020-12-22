@@ -2,8 +2,8 @@ package com.layonf.open_pdf_file_android_example
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.FileUtils
 import android.webkit.WebViewClient
+import com.layonf.open_pdf_file_android_example.utils.FileUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_web_view.*
 
