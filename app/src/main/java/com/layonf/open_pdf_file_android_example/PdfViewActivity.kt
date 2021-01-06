@@ -1,6 +1,8 @@
 package com.layonf.open_pdf_file_android_example
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -22,6 +24,7 @@ class PdfViewActivity : AppCompatActivity() {
             }
             "storage" -> {
                 // perform action to show pdf from assets
+                selectPdfFromStorage()
             }
             "internet" -> {
                 // perform action to show pdf from assets
@@ -38,5 +41,34 @@ class PdfViewActivity : AppCompatActivity() {
                     "Error at page: $page", Toast.LENGTH_LONG)
                     .show()
             }.load()
+    }
+
+    private fun selectPdfFromStorage(){
+        Toast.makeText(this, "selectPDF", Toast.LENGTH_LONG).show()
+        val browserStorage = Intent(Intent.ACTION_GET_CONTENT)
+        browserStorage.type = "application/pdf"
+        browserStorage.addCategory(Intent.CATEGORY_OPENABLE)
+        startActivityForResult(
+            Intent.createChooser(browserStorage, "Select PDF"), PDF_SELECTION_CODE
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == PDF_SELECTION_CODE && resultCode == Activity.RESULT_OK && data != null ){
+            val selectedPdfFromStorage = data.data
+            showPdfFromURI(selectedPdfFromStorage)
+        }
+    }
+
+    private fun showPdfFromURI(uri: Uri?) {
+        pdfView.fromUri(uri)
+            .defaultPage(0)
+            .spacing(10)
+            .load()
+    }
+
+    companion object {
+        private const val PDF_SELECTION_CODE  = 99
     }
 }
